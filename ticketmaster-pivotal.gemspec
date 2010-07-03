@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = %q{2010-06-26}
+  s.date = %q{2010-07-03}
   s.description = %q{This is a ticketmaster provider for interacting with Pivotal Tracker .}
   s.email = %q{hong.quach@abigfisch.com}
   s.extra_rdoc_files = [
@@ -24,13 +24,15 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/pivotal/pivotal-api.rb",
+     "lib/provider/comment.rb",
      "lib/provider/pivotal.rb",
      "lib/provider/project.rb",
      "lib/provider/ticket.rb",
      "lib/ticketmaster-pivotal.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
-     "spec/ticketmaster-pivotal_spec.rb"
+     "spec/ticketmaster-pivotal_spec.rb",
+     "ticketmaster-pivotal.gemspec"
   ]
   s.homepage = %q{http://ticket.rb}
   s.rdoc_options = ["--charset=UTF-8"]
