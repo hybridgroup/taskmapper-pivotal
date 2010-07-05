@@ -32,6 +32,17 @@ module TicketMaster::Provider
         search_by_attribute(comments, options, limit)
       end
       
+      # A custom creator
+      # We didn't really need to do much other than change the :ticket_id attribute to :story_id
+      def self.create(*options)
+        first = options.first
+        first[:story_id] ||=  first.delete(:ticket_id) || first.delete('ticket_id')
+        first[:text] ||= first.delete(:body) || first.delete('body')
+        note = PivotalAPI::Note.new(first)
+        note.save
+        self.new note
+      end
+      
       def initialize(note, ticket = nil)
         @system_data ||= {}
         @system_data[:ticket] = @system_data[:client] = ticket if ticket

@@ -6,15 +6,6 @@ module TicketMaster::Provider
       attr_accessor :prefix_options
       API = PivotalAPI::Story
       
-      # The creator
-      def self.create(*options)
-        new_ticket = PivotalAPI::Story.new(:project_id => (options.first.delete(:project_id) || options.first.delete('project_id')).to_i)
-        ticket_attr.each do |k, v|
-          new_ticket.send(k + '=', v)
-        end
-        new_ticket.save
-        self.new new_ticket
-      end
       
       # The saver
       def save(*options)
