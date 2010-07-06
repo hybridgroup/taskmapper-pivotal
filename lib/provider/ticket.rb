@@ -1,6 +1,17 @@
 module TicketMaster::Provider
   module Pivotal
     # Ticket class for ticketmaster-pivotal
+    # * id
+    # * status
+    # * priority
+    # * title => name
+    # * resolution
+    # * created_at
+    # * updated_at
+    # * description => text
+    # * assignee
+    # * requestor
+    # * project_id (prefix_options[:project_id])
     class Ticket < TicketMaster::Provider::Base::Ticket
       @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid']
       attr_accessor :prefix_options
@@ -22,6 +33,22 @@ module TicketMaster::Provider
       
       def project_id
         self.prefix_options[:project_id]
+      end
+      
+      def title
+        self.name
+      end
+      
+      def title=(title)
+        self.name=title
+      end
+      
+      def description
+        self.text
+      end
+      
+      def description=(desc)
+        self.text=desc
       end
       
       # The closer
