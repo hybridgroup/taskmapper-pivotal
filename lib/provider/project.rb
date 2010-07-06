@@ -28,7 +28,12 @@ module TicketMaster::Provider
         result = self.system_data[:client].destroy
         result.is_a?(Net::HTTPOK)
       end
-
+      
+      # copy from
+      def copy(project)
+        project.tickets.each do |ticket|          copy_ticket = self.ticket!(:name => ticket.title, :description => ticket.body)          ticket.comments.each do |comment|            copy_ticket.comment!(:text => comment.body)            sleep 1          end        end
+      end
+      
     end
   end
 end
