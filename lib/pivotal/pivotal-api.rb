@@ -28,7 +28,7 @@ module PivotalAPI
   end
 
   class Base < ActiveResource::Base
-    self.site = 'http://www.pivotaltracker.com/services/v3/'
+    self.site = 'https://www.pivotaltracker.com/services/v3/'
     def self.inherited(base)
       PivotalAPI.resources << base
       super
