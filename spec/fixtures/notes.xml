@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notes type="array">
+  <note>
+    <id type="integer">1946635</id>
+    <text>note</text>
+    <author>Hong Quach</author>
+    <noted_at type="datetime">2010/07/03 08:09:38 UTC</noted_at>
+  </note>
+  <note>
+    <id type="integer">1946719</id>
+    <text>etuhanoeth naou</text>
+    <author>Hong Quach</author>
+    <noted_at type="datetime">2010/07/03 09:57:03 UTC</noted_at>
+  </note>
+</notes>
