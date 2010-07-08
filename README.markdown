@@ -14,4 +14,4 @@ Description goes here.
 
 ## Copyright
 
-Copyright (c) 2010 HybridGroup. See LICENSE for details.
+Copyright (c) 2010 The Hybrid Group. See LICENSE for details.
