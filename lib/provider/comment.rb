@@ -48,14 +48,15 @@ module TicketMaster::Provider
         @system_data[:ticket] = @system_data[:client] = ticket if ticket
         if note.is_a?(PivotalAPI::Note)
           @system_data[:note] = note
-          self.project_id = note.prefix_options[:project_id]
-          self.project_id ||= ticket.prefix_options[:project_id] if ticket
-          self.ticket_id = note.prefix_options[:story_id]
-          self.ticket_id ||= ticket.id if ticket
-          self.id = note.id
-          self.prefix_options = note.prefix_options
+#          self.project_id = note.prefix_options[:project_id]
+#          self.project_id ||= ticket.prefix_options[:project_id] if ticket
+#          self.ticket_id = note.prefix_options[:story_id]
+#          self.ticket_id ||= ticket.id if ticket
+#          self.id = note.id
+#          self.prefix_options = note.prefix_options
         end
-        super(@system_data[:note])
+        #raise @system_data[:note].inspect
+        super(@system_data[:note].attributes)
       end
       
       def body

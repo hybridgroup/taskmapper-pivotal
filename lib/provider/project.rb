@@ -23,6 +23,11 @@ module TicketMaster::Provider
         true
       end
       
+      def initialize(*options)
+        super(*options)
+        self.id = self.id.to_i
+      end
+      
       # Delete this project
       def destroy
         result = self.system_data[:client].destroy

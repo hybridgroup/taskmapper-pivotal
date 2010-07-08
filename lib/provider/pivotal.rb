@@ -21,5 +21,21 @@ module TicketMaster::Provider
       end
     end
     
+    def projects(*options)
+      if options[0].is_a?(Hash) and (options[0][:id].is_a?(Fixnum) or options[0]['id'].is_a?(Fixnum))
+        options[0][:id] = options[0][:id].to_s if options[0][:id]
+        options[o]['id'] = options[0]['id'].to_s if options[0]['id']
+      end
+      super(*options)
+    end
+    
+    def project(*options)
+      if options[0].is_a?(Hash) and (options[0][:id].is_a?(Fixnum) or options[0]['id'].is_a?(Fixnum))
+        options[0][:id] = options[0][:id].to_s if options[0][:id]
+        options[o]['id'] = options[0]['id'].to_s if options[0]['id']
+      end
+      super(*options)
+    end
+    
   end
 end

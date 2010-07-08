@@ -43,14 +43,6 @@ module TicketMaster::Provider
         self.name=title
       end
       
-      def description
-        self.text
-      end
-      
-      def description=(desc)
-        self.text=desc
-      end
-      
       # The closer
       def close(resolution = 'resolved')
         resolution = 'resolved' unless @@allowed_states.include?(resolution)
