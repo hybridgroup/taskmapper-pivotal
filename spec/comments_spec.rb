@@ -27,32 +27,32 @@ describe "Ticketmaster::Provider::Pivotal::Comment" do
   
   it "should be able to load all comments" do
     @comments = @ticket.comments
-    @comments.should be_an_instance_of Array
-    @comments.first.should be_an_instance_of @klass
+    @comments.should be_an_instance_of(Array)
+    @comments.first.should be_an_instance_of(@klass)
   end
   
   it "should be able to load all comments based on 'id's" do
     @comments = @ticket.comments([@comment_id])
-    @comments.should be_an_instance_of Array
-    @comments.first.should be_an_instance_of @klass
+    @comments.should be_an_instance_of(Array)
+    @comments.first.should be_an_instance_of(@klass)
     @comments.first.id.should == @comment_id
   end
   
   it "should be able to load all comments based on attributes" do
     @comments = @ticket.comments(:id => @comment_id)
-    @comments.should be_an_instance_of Array
-    @comments.first.should be_an_instance_of @klass
+    @comments.should be_an_instance_of(Array)
+    @comments.first.should be_an_instance_of(@klass)
   end
   
   it "should be able to load a comment based on id" do
     @comment = @ticket.comment(@comment_id)
-    @comment.should be_an_instance_of @klass
+    @comment.should be_an_instance_of(@klass)
     @comment.id.should == @comment_id
   end
   
   it "should be able to load a comment based on attributes" do
     @comment = @ticket.comment(:id => @comment_id)
-    @comment.should be_an_instance_of @klass
+    @comment.should be_an_instance_of(@klass)
   end
   
   it "should return the class" do
@@ -61,6 +61,6 @@ describe "Ticketmaster::Provider::Pivotal::Comment" do
   
   it "should be able to create a comment" do # which as mentioned before is technically a ticket update
     @comment = @ticket.comment!(:body => 'hello there boys and girls')
-    @comment.should be_an_instance_of @klass
+    @comment.should be_an_instance_of(@klass)
   end
 end
