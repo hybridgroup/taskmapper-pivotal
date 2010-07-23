@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ticketmaster-pivotal}
-  s.version = "0.3.6"
+  s.version = "0.3.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = %q{2010-07-08}
+  s.date = %q{2010-07-23}
   s.description = %q{This is a ticketmaster provider for interacting with Pivotal Tracker .}
   s.email = %q{hong.quach@abigfisch.com}
   s.extra_rdoc_files = [
