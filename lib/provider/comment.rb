@@ -56,31 +56,17 @@ module TicketMaster::Provider
 #          self.prefix_options = note.prefix_options
         end
         #raise @system_data[:note].inspect
-        super(@system_data[:note].attributes)
-      end
-      
-      def body
-        self.text
+        data = @system_data[:note].attributes
+        data[:body] = data[:text]
+        data[:created_at] = data[:noted_at]
+        data[:updated_at] = data[:noted_at]
+        data[:project_id] = @system_data[:note].prefix_options[:project_id]
+        data[:ticket_id] = @system_data[:note].prefix_options[:story_id]
+        super(data) if data
       end
       
       def body=(bod)
         self.text = bod
-      end
-      
-      def created_at
-        self.noted_at
-      end
-      
-      def updated_at
-        self.noted_at
-      end
-      
-      def project_id
-        self.project_id || @system_data[:client].prefix_options[:project_id]
-      end
-      
-      def ticket_id
-        self.ticket_id || @system_data[:client].prefix_options[:story_id]
       end
     end
   end
