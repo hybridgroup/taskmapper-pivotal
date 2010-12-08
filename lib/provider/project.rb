@@ -33,6 +33,16 @@ module TicketMaster::Provider
         result = self.system_data[:client].destroy
         result.is_a?(Net::HTTPOK)
       end
+
+      def ticket!(*options)
+        if options.first.is_a?(Hash)
+          options[0].merge!(:project_id => id)
+          title = options[0].delete('title') || options[0].delete(:title) || options[0].delete(:summary) || options[0].delete('summary')
+          options[0][:name] = title
+          warn("Pivotal Tracker requires a title or name for the story") if options[0][:name].blank? and options[0]['name'].blank?
+        end
+        provider_parent(self.class)::Ticket.create(*options)
+      end
       
       # copy from
       def copy(project)
