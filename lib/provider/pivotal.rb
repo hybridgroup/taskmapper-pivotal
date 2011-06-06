@@ -20,6 +20,15 @@ module TicketMaster::Provider
         PivotalAPI.authenticate(auth.username, auth.password)
       end
     end
+
+    def valid?
+      begin
+        PROJECT_API.find(:first)
+        true
+      rescue
+        false
+      end
+    end
     
   end
 end
