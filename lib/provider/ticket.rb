@@ -18,29 +18,13 @@ module TicketMaster::Provider
       attr_accessor :prefix_options
       API = PivotalAPI::Story
 
-      def self.find(project_id, *options)
-        if options[0].first.is_a? Array
-          self.find_by_attributes(project_id, {}, options[0].first)
-        elsif options[0].first.is_a? Hash
-          self.find_by_attributes(project_id, options[0].first)
-        else
-          self.find_by_attributes(project_id)
-        end
-      end
-
-      def self.find_by_attributes(project_id, attributes = {}, ids = [])
+      def self.find_by_attributes(project_id, attributes = {})
         filter = ""
-        unless ids.empty?
-          filter = ids.join(",")
+        attributes.each_pair do |key, value|
+          filter << "#{key}:#{value} "
         end
-        unless filter.empty?
-          attributes.each_pair do |key, value|
-            key = "name" if key == "title" 
-            key = "text" if key == "description"
-            filter << " #{key}:#{value}"
-          end
-        end
-        API.find(:all, :params => {:project_id => project_id, :filter => "#{filter}"}).map { |xticket| self.new xticket }
+        filter.strip!
+        API.find(:all, :params => {:project_id => project_id, :filter => filter}).map { |xticket| self.new xticket }
       end
 
       # The saver

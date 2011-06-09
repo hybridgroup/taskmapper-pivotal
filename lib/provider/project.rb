@@ -44,12 +44,6 @@ module TicketMaster::Provider
         provider_parent(self.class)::Ticket.create(*options)
       end
 
-      def ticket(*options)
-        if options.first.is_a? Hash
-          Ticket.find(self.id, options).first
-        end
-      end
-      
       # copy from
       def copy(project)
         project.tickets.each do |ticket|
