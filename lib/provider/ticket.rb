@@ -19,12 +19,7 @@ module TicketMaster::Provider
       API = PivotalAPI::Story
 
       def self.find_by_attributes(project_id, attributes = {})
-        filter = ""
-        attributes.each_pair do |key, value|
-          filter << "#{key}:#{value} "
-        end
-        filter.strip!
-        API.find(:all, :params => {:project_id => project_id, :filter => filter}).map { |xticket| self.new xticket }
+        API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
       end
 
       # The saver
@@ -58,6 +53,15 @@ module TicketMaster::Provider
         ticket = PivotalAPI::Ticket.find(self.id, :params => {:project_id => self.prefix_options[:project_id]})
         ticket.state = resolution
         ticket.save
+      end
+
+      private 
+      def self.filter(attributes = {})
+        filter = ""
+        attributes.each_pair do |key, value|
+          filter << "#{key}:#{value} "
+        end
+        filter.strip!
       end
     end
   end
