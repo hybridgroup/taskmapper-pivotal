@@ -7,6 +7,8 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
     ActiveResource::HttpMock.respond_to do |mock|
       mock.get '/services/v3/projects/93790.xml', headers, fixture_for('projects/93790'), 200
       mock.get '/services/v3/projects/93790/stories.xml', headers, fixture_for('stories'), 200
+      mock.get '/services/v3/projects/93790/stories.xml?filter=', headers, fixture_for('stories'), 200
+      mock.get '/services/v3/projects/93790/stories.xml?filter=id%3A4056827', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories/4056827.xml', headers, fixture_for('stories/4056827'), 200
       mock.put '/services/v3/projects/93790/stories/4056827.xml', wheaders, '', 200
       mock.post '/services/v3/projects/93790/stories.xml', wheaders, fixture_for('stories/4056827'), 200

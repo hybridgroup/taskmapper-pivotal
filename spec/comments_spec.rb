@@ -7,6 +7,7 @@ describe "Ticketmaster::Provider::Pivotal::Comment" do
     ActiveResource::HttpMock.respond_to do |mock|
       mock.get '/services/v3/projects/93790.xml', headers, fixture_for('projects/93790'), 200
       mock.get '/services/v3/projects/93790/stories.xml', headers, fixture_for('stories'), 200
+      mock.get '/services/v3/projects/93790/stories.xml?filter=', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories/4056827.xml', headers, fixture_for('stories/4056827'), 200
       mock.get '/services/v3/projects/93790/stories/4056827/notes.xml', headers, fixture_for('notes'), 200
       mock.get '/services/v3/projects/93790/stories/4056827/notes/1946635.xml', headers, fixture_for('notes/1946635'), 200
