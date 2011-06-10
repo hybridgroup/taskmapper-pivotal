@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activities type="array">
+  <activity>
+    <id type="integer">86811411</id>
+    <version type="integer">3</version>
+    <event_type>story_create</event_type>
+    <occurred_at type="datetime">2011/06/09 23:29:12 UTC</occurred_at>
+    <author>Clutch Test</author>
+    <project_id type="integer">136096</project_id>
+    <description>Clutch Test added &quot;Let's see with another story&quot;</description>
+    <stories type="array">
+      <story>
+        <id type="integer">14398445</id>
+        <url>http://www.pivotaltracker.com/services/v3/projects/136096/stories/14398445</url>
+        <name>Let's see with another story</name>
+        <story_type>feature</story_type>
+        <current_state>unscheduled</current_state>
+      </story>
+    </stories>
+  </activity>
+  <activity>
+    <id type="integer">86747595</id>
+    <version type="integer">2</version>
+    <event_type>story_create</event_type>
+    <occurred_at type="datetime">2011/06/09 20:06:46 UTC</occurred_at>
+    <author>Clutch Test</author>
+    <project_id type="integer">136096</project_id>
+    <description>Clutch Test added &quot;Hello, This is clutch&quot;</description>
+    <stories type="array">
+      <story>
+        <id type="integer">14389955</id>
+        <url>http://www.pivotaltracker.com/services/v3/projects/136096/stories/14389955</url>
+        <name>Hello, This is clutch</name>
+        <story_type>feature</story_type>
+        <current_state>unscheduled</current_state>
+      </story>
+    </stories>
+  </activity>
+</activities>

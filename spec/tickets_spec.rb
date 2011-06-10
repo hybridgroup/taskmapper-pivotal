@@ -8,10 +8,12 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
       mock.get '/services/v3/projects/93790.xml', headers, fixture_for('projects/93790'), 200
       mock.get '/services/v3/projects/93790/stories.xml', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories.xml?filter=', headers, fixture_for('stories'), 200
+      mock.get '/services/v3/projects/93790/activities.xml?occurred_since_date=2010%2F06%2F26', headers, fixture_for('activities'), 200
       mock.get '/services/v3/projects/93790/stories.xml?filter=id%3A4056827', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories/4056827.xml', headers, fixture_for('stories/4056827'), 200
       mock.put '/services/v3/projects/93790/stories/4056827.xml', wheaders, '', 200
       mock.post '/services/v3/projects/93790/stories.xml', wheaders, fixture_for('stories/4056827'), 200
+
     end
     @project_id = 93790
     @ticket_id = 4056827
@@ -68,6 +70,20 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
   it "should be able to create a ticket" do
     @ticket = @project.ticket!(:title => 'Ticket #12', :description => 'Body')
     @ticket.should be_an_instance_of(@klass)
+  end
+
+  it "should be able to load all tickets based on attributes using updated_at field" do 
+    @ticket = @project.tickets.first
+    tickets = @project.tickets(:updated_at => @ticket.updated_at)
+    tickets.should be_an_instance_of(Array)
+    tickets.first.should be_an_instance_of(@klass)
+  end
+
+  it "shoule be able to load all tickets based on attributes using created_at field" do 
+    @ticket = @project.tickets.first
+    tickets = @project.tickets(:created_at => @ticket.created_at)
+    tickets.should be_an_instance_of(Array)
+    tickets.first.should be_an_instance_of(@klass)
   end
   
 end
