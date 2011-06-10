@@ -20,6 +20,11 @@ module TicketMaster::Provider
 
       def self.find_by_attributes(project_id, attributes = {})
         if attributes.has_key?(:updated_at)  
+          tickets = []
+          PivotalAPI::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => attributes[:updated_at].strftime("%C/%m/%d %H:%M:%S")}).each do |activity|
+            tickets = activity.stories.map { |xstory| self.new xstory }
+          end
+          tickets
         else
           API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
         end
