@@ -47,27 +47,27 @@ module PivotalAPI
   class Activity < Base
     self.site += 'projects/:project_id/'
   end
-  
+
   class Membership < Base
     self.site += 'projects/:project_id/'
   end
-  
+
   class Iteration < Base
     self.site += 'projects/:project_id/'
   end
-  
+
   class Story < Base
     self.site += 'projects/:project_id/'
   end
-  
+
   class Note < Base
     self.site += 'projects/:project_id/stories/:story_id/'
   end
-  
+
   class Task < Base
     self.site += 'projects/:project_id/stories/:story_id/'
   end
-  
+
   class AllActivity < Base
   end
 end
