@@ -69,5 +69,12 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
     @ticket = @project.ticket!(:title => 'Ticket #12', :description => 'Body')
     @ticket.should be_an_instance_of(@klass)
   end
+
+  it "should be able to load all tickets based on attributes using updated_at and created_at fields" do 
+    @ticket = @project.tickets.first
+    tickets = @project.tickets(:updated_at => @ticket.updated_at)
+    tickets.should be_an_instance_of(Array)
+    tickets.first.should be_an_instance_of(@klass)
+  end
   
 end

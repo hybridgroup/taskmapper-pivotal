@@ -19,7 +19,10 @@ module TicketMaster::Provider
       API = PivotalAPI::Story
 
       def self.find_by_attributes(project_id, attributes = {})
-        API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
+        if attributes.has_key?(:updated_at)  
+        else
+          API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
+        end
       end
 
       # The saver
