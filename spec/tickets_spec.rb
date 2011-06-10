@@ -8,11 +8,7 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
       mock.get '/services/v3/projects/93790.xml', headers, fixture_for('projects/93790'), 200
       mock.get '/services/v3/projects/93790/stories.xml', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories.xml?filter=', headers, fixture_for('stories'), 200
-<<<<<<< HEAD
-      mock.get '/services/v3/projects/93790/activities.xml?occurred_since_date=20%2F06%2F26+22%3A56%3A02', headers, fixture_for('activities'), 200
-=======
       mock.get '/services/v3/projects/93790/activities.xml?occurred_since_date=2010%2F06%2F26', headers, fixture_for('activities'), 200
->>>>>>> fixing-datetime-search
       mock.get '/services/v3/projects/93790/stories.xml?filter=id%3A4056827', headers, fixture_for('stories'), 200
       mock.get '/services/v3/projects/93790/stories/4056827.xml', headers, fixture_for('stories/4056827'), 200
       mock.put '/services/v3/projects/93790/stories/4056827.xml', wheaders, '', 200
