@@ -61,7 +61,7 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
   end
   
   it "should be able to update and save a ticket" do
-    @ticket = @project.ticket(4056827)
+    @ticket = @project.ticket(@ticket_id)
     #@ticket.save.should == nil
     @ticket.description = 'hello'
     @ticket.save.should == true
@@ -73,14 +73,14 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
   end
 
   it "should be able to load all tickets based on attributes using updated_at field" do 
-    @ticket = @project.tickets.first
+    @ticket = @project.ticket(@ticket_id)
     tickets = @project.tickets(:updated_at => @ticket.updated_at)
     tickets.should be_an_instance_of(Array)
     tickets.first.should be_an_instance_of(@klass)
   end
 
   it "shoule be able to load all tickets based on attributes using created_at field" do 
-    @ticket = @project.tickets.first
+    @ticket = @project.ticket(@ticket_id)
     tickets = @project.tickets(:created_at => @ticket.created_at)
     tickets.should be_an_instance_of(Array)
     tickets.first.should be_an_instance_of(@klass)
