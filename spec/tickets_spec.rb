@@ -85,5 +85,10 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
     tickets.should be_an_instance_of(Array)
     tickets.first.should be_an_instance_of(@klass)
   end
+
+  it "should return the requested_by field" do 
+    @ticket = @project.ticket(4056827)
+    @ticket.requested_by.should == 'Hong Quach'
+  end
   
 end
