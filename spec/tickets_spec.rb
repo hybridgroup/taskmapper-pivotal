@@ -85,5 +85,10 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
     tickets.should be_an_instance_of(Array)
     tickets.first.should be_an_instance_of(@klass)
   end
+
+  it "should return requestor field" do 
+    @ticket = @project.ticket(@ticket_id)
+    @ticket.requestor.should == 'Hong Quach'
+  end
   
 end

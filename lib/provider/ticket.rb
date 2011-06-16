@@ -46,6 +46,10 @@ module TicketMaster::Provider
         self.prefix_options[:project_id]
       end
 
+      def requestor
+        self.requested_by
+      end
+
       def title
         self.name
       end
