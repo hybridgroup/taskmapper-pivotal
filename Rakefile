@@ -11,9 +11,9 @@ begin
     gem.homepage = "http://ticket.rb"
     gem.authors = ["HybridGroup"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_dependency "ticketmaster", ">= 0.3.0"
-    gem.add_dependency "activesupport", ">= 2.3.0"
-    gem.add_dependency "activeresource", ">= 2.3.0"
+    gem.add_dependency "ticketmaster", ">= 0.6.0"
+    gem.add_dependency "activesupport", ">= 3.1.0"
+    gem.add_dependency "activeresource", ">= 3.1.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
