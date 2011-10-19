@@ -69,3 +69,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<activeresource>, [">= 3.1.0"])
   end
 end
+
