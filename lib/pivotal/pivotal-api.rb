@@ -41,10 +41,10 @@ module PivotalAPI
       Story.find(:all, :params => options.merge!(:project_id => self.id))
     end
   end
-  
+
   class Token < Base
   end
-  
+
   class Activity < Base
     self.site += 'projects/:project_id/'
   end
