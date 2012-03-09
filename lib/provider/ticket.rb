@@ -58,6 +58,9 @@ module TicketMaster::Provider
         self.name=title
       end
 
+      def comment!(*options)
+      	Comment.create(self.project_id, self.id, options.first)
+      end
       # The closer
       def close(resolution = 'resolved')
         resolution = 'resolved' unless @@allowed_states.include?(resolution)
@@ -66,7 +69,7 @@ module TicketMaster::Provider
         ticket.save
       end
 
-      private 
+      private
       def self.search_by_datefields(project_id, date_to_search)
         date_to_search = date_to_search.strftime("%Y/%m/%d")
         tickets = []

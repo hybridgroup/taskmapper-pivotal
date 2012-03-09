@@ -10,20 +10,20 @@ module TicketMaster::Provider
     # * project_id
     class Comment < TicketMaster::Provider::Base::Comment
       API = PivotalAPI::Note
-      
+
       # A custom find_by_id
       # The "comment" id is it's index in the versions array. An id of 0 therefore exists and
       # should be the first ticket (original)
       def self.find_by_id(project_id, ticket_id, id)
-        self.new PivotalAPI::Note.find(id, :params => {:project_id => project_id, :story_id => ticket_id})
+        self.new(project_id, ticket_id, PivotalAPI::Note.find(id, :params => {:project_id => project_id, :story_id => ticket_id}))
       end
-      
+
       # A custom find_by_attributes
       #
       def self.find_by_attributes(project_id, ticket_id, attributes = {})
-        self.search(project_id, ticket_id, attributes).collect { |comment| self.new comment }
+        self.search(project_id, ticket_id, attributes).collect { |comment| self.new(project_id, ticket_id, comment) }
       end
-      
+
       # A custom searcher
       #
       # It returns a custom result because we need the original story to make a comment.
@@ -31,40 +31,52 @@ module TicketMaster::Provider
         comments = PivotalAPI::Note.find(:all, :params => {:project_id => project_id, :story_id => ticket_id})
         search_by_attribute(comments, options, limit)
       end
-      
+
       # A custom creator
       # We didn't really need to do much other than change the :ticket_id attribute to :story_id
-      def self.create(*options)
+      def self.create(project_id, ticket_id, *options)
         first = options.first
-        first[:story_id] ||=  first.delete(:ticket_id) || first.delete('ticket_id')
+        first[:story_id] ||= ticket_id
+        first[:project_id] ||= project_id
         first[:text] ||= first.delete(:body) || first.delete('body')
         note = PivotalAPI::Note.new(first)
         note.save
-        self.new note
+        self.new(project_id, ticket_id, note)
       end
-      
-      def initialize(note, ticket = nil)
-        @system_data ||= {}
-        @system_data[:ticket] = @system_data[:client] = ticket if ticket
-        if note.is_a?(PivotalAPI::Note)
-          @system_data[:note] = note
-#          self.project_id = note.prefix_options[:project_id]
-#          self.project_id ||= ticket.prefix_options[:project_id] if ticket
-#          self.ticket_id = note.prefix_options[:story_id]
-#          self.ticket_id ||= ticket.id if ticket
-#          self.id = note.id
-#          self.prefix_options = note.prefix_options
+
+      def initialize(project_id, ticket_id, *object)
+        if object.first
+          object = object.first
+          unless object.is_a? Hash
+            hash = {:id => object.id,
+                    :body => object.text,
+                    :update_at => object.noted_at,
+                    :created_at => object.noted_at,
+                    :project_id => project_id,
+                    :ticket_id => ticket_id
+                    }
+          else
+            hash = object
+          end
+          super hash
         end
-        #raise @system_data[:note].inspect
-        data = @system_data[:note].attributes
-        data[:body] = data[:text]
-        data[:created_at] = data[:noted_at]
-        data[:updated_at] = data[:noted_at]
-        data[:project_id] = @system_data[:note].prefix_options[:project_id]
-        data[:ticket_id] = @system_data[:note].prefix_options[:story_id]
-        super(data) if data
       end
-      
+
+    # def initialize(note, ticket = nil)
+    #   @system_data ||= {}
+    #   @system_data[:ticket] = @system_data[:client] = ticket if ticket
+    #   if note.is_a?(PivotalAPI::Note)
+    #     @system_data[:note] = note
+    #   end
+    #   data = @system_data[:note].attributes
+    #   data[:body] = data[:text]
+    #   data[:created_at] = data[:noted_at]
+    #   data[:updated_at] = data[:noted_at]
+    #   data[:project_id] = @system_data[:note].prefix_options[:project_id]
+    #   data[:ticket_id] = @system_data[:note].prefix_options[:story_id]
+    #   super(data) if data
+    # end
+
       def body=(bod)
         self.text = bod
       end
