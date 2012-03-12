@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = "2012-03-09"
+  s.date = "2012-03-12"
   s.description = "This is a ticketmaster provider for interacting with Pivotal Tracker ."
   s.email = "hong.quach@abigfisch.com"
   s.extra_rdoc_files = [
@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://ticket.rb"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.17"
+  s.rubygems_version = "1.8.15"
   s.summary = "This is a ticketmaster provider for interacting with Pivotal Tracker"
 
   if s.respond_to? :specification_version then
