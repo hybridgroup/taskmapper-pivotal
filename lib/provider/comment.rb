@@ -62,21 +62,6 @@ module TicketMaster::Provider
         end
       end
 
-    # def initialize(note, ticket = nil)
-    #   @system_data ||= {}
-    #   @system_data[:ticket] = @system_data[:client] = ticket if ticket
-    #   if note.is_a?(PivotalAPI::Note)
-    #     @system_data[:note] = note
-    #   end
-    #   data = @system_data[:note].attributes
-    #   data[:body] = data[:text]
-    #   data[:created_at] = data[:noted_at]
-    #   data[:updated_at] = data[:noted_at]
-    #   data[:project_id] = @system_data[:note].prefix_options[:project_id]
-    #   data[:ticket_id] = @system_data[:note].prefix_options[:story_id]
-    #   super(data) if data
-    # end
-
       def body=(bod)
         self.text = bod
       end
