@@ -4,20 +4,23 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{ticketmaster-pivotal}
-  s.version = "0.4.9"
+  s.name = "ticketmaster-pivotal"
+  s.version = "0.6.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = %q{2011-06-06}
-  s.description = %q{This is a ticketmaster provider for interacting with Pivotal Tracker .}
-  s.email = %q{hong.quach@abigfisch.com}
+  s.date = "2012-03-12"
+  s.description = "This is a ticketmaster provider for interacting with Pivotal Tracker ."
+  s.email = "hong.quach@abigfisch.com"
   s.extra_rdoc_files = [
     "LICENSE",
     "README.markdown"
   ]
   s.files = [
     ".document",
+    ".travis.yml",
+    "Gemfile",
+    "Gemfile.lock",
     "LICENSE",
     "README.markdown",
     "Rakefile",
@@ -29,6 +32,7 @@ Gem::Specification.new do |s|
     "lib/provider/ticket.rb",
     "lib/ticketmaster-pivotal.rb",
     "spec/comments_spec.rb",
+    "spec/fixtures/activities.xml",
     "spec/fixtures/notes.xml",
     "spec/fixtures/notes/1946635.xml",
     "spec/fixtures/projects.xml",
@@ -42,37 +46,36 @@ Gem::Specification.new do |s|
     "spec/tickets_spec.rb",
     "ticketmaster-pivotal.gemspec"
   ]
-  s.homepage = %q{http://ticket.rb}
+  s.homepage = "http://ticket.rb"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.1}
-  s.summary = %q{This is a ticketmaster provider for interacting with Pivotal Tracker}
-  s.test_files = [
-    "spec/comments_spec.rb",
-    "spec/projects_spec.rb",
-    "spec/spec_helper.rb",
-    "spec/ticketmaster-pivotal_spec.rb",
-    "spec/tickets_spec.rb"
-  ]
+  s.rubygems_version = "1.8.15"
+  s.summary = "This is a ticketmaster provider for interacting with Pivotal Tracker"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_runtime_dependency(%q<ticketmaster>, [">= 0.3.0"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.0"])
-      s.add_runtime_dependency(%q<activeresource>, [">= 2.3.0"])
+      s.add_runtime_dependency(%q<ticketmaster>, ["~> 0.6.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_development_dependency(%q<simplecov>, ["~> 0.5.0"])
+      s.add_development_dependency(%q<rcov>, ["~> 1.0.0"])
     else
-      s.add_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_dependency(%q<ticketmaster>, [">= 0.3.0"])
-      s.add_dependency(%q<activesupport>, [">= 2.3.0"])
-      s.add_dependency(%q<activeresource>, [">= 2.3.0"])
+      s.add_dependency(%q<ticketmaster>, ["~> 0.6.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_dependency(%q<simplecov>, ["~> 0.5.0"])
+      s.add_dependency(%q<rcov>, ["~> 1.0.0"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 1.2.9"])
-    s.add_dependency(%q<ticketmaster>, [">= 0.3.0"])
-    s.add_dependency(%q<activesupport>, [">= 2.3.0"])
-    s.add_dependency(%q<activeresource>, [">= 2.3.0"])
+    s.add_dependency(%q<ticketmaster>, ["~> 0.6.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+    s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+    s.add_dependency(%q<simplecov>, ["~> 0.5.0"])
+    s.add_dependency(%q<rcov>, ["~> 1.0.0"])
   end
 end
 

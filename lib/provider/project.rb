@@ -16,18 +16,18 @@ module TicketMaster::Provider
       attr_accessor :prefix_options
       alias_method :stories, :tickets
       alias_method :story, :ticket
-      
+
       # Save this project
       def save
         warn 'Warning: Pivotal does not allow editing of project attributes. This method does nothing.'
         true
       end
-      
+
       def initialize(*options)
         super(*options)
         self.id = self.id.to_i
       end
-      
+
       # Delete this project
       def destroy
         result = self.system_data[:client].destroy
@@ -38,7 +38,9 @@ module TicketMaster::Provider
         if options.first.is_a?(Hash)
           options[0].merge!(:project_id => id)
           title = options[0].delete('title') || options[0].delete(:title) || options[0].delete(:summary) || options[0].delete('summary')
+          description = options[0].delete('body') || options[0].delete(:body)
           options[0][:name] = title
+          options[0][:description] = description
           warn("Pivotal Tracker requires a title or name for the story") if options[0][:name].blank? and options[0]['name'].blank?
         end
         provider_parent(self.class)::Ticket.create(*options)
@@ -54,7 +56,7 @@ module TicketMaster::Provider
           end
         end
       end
-      
+
     end
   end
 end

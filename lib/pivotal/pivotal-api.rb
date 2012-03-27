@@ -29,6 +29,7 @@ module PivotalAPI
 
   class Base < ActiveResource::Base
     self.site = 'https://www.pivotaltracker.com/services/v3/'
+    self.format = ActiveResource::Formats::XmlFormat
     def self.inherited(base)
       PivotalAPI.resources << base
       super
@@ -40,10 +41,10 @@ module PivotalAPI
       Story.find(:all, :params => options.merge!(:project_id => self.id))
     end
   end
-  
+
   class Token < Base
   end
-  
+
   class Activity < Base
     self.site += 'projects/:project_id/'
   end

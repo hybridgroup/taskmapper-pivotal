@@ -18,4 +18,5 @@ describe "TicketmasterPivotal" do
   it "should return true with valid authentication" do 
     @ticketmaster.valid?.should be_true
   end
+
 end

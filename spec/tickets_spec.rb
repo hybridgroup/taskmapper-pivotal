@@ -88,7 +88,7 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
 
   it "should return the requested_by field" do 
     @ticket = @project.ticket(@ticket_id)
-    @ticket.requested_by.should == 'Hong Quach'
+    @ticket.requestor.should == 'Hong Quach'
   end
   
 end

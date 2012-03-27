@@ -14,6 +14,9 @@ module TicketMaster::Provider
     def authorize(auth = {})
       @authentication ||= TicketMaster::Authenticator.new(auth)
       auth = @authentication
+      if auth.token.empty?
+        raise "You should pass a token for authentication"
+      end
       if auth.token
         PivotalAPI.token = auth.token
       elsif auth.username && auth.password
