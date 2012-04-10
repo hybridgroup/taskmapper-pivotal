@@ -9,6 +9,7 @@
   <description>Hi hi. Description!</description>
   <name>Hello</name>
   <requested_by>Hong Quach</requested_by>
+  <owned_by>Hong Quach</owned_by>
   <created_at type="datetime">2010/06/26 22:31:08 UTC</created_at>
   <updated_at type="datetime">2010/06/26 22:56:02 UTC</updated_at>
   <notes type="array">

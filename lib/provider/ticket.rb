@@ -58,6 +58,22 @@ module TicketMaster::Provider
         self.name=title
       end
 
+      def status
+        self.current_state
+      end
+
+      def priority
+        self.estimate
+      end
+
+      def resolution
+        self.current_state
+      end
+
+      def assignee
+        self.owned_by
+      end
+
       def comment!(*options)
       	Comment.create(self.project_id, self.id, options.first)
       end

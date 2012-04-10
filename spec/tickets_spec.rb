@@ -97,4 +97,18 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
     @ticket.save.should be_true
   end
 
+  it "should have all contract fields for tickets" do 
+    @ticket = @project.ticket(@ticket_id)
+    @ticket.title.should_not be_nil
+    @ticket.description.should_not be_nil
+    @ticket.status.should_not be_nil
+    @ticket.priority.should_not be_nil
+    @ticket.resolution.should_not be_nil
+    @ticket.created_at.should_not be_nil
+    @ticket.updated_at.should_not be_nil
+    @ticket.assignee.should_not be_nil
+    @ticket.requestor.should_not be_nil
+    @ticket.project_id.should_not be_nil
+  end
+
 end
