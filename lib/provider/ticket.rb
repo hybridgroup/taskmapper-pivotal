@@ -97,7 +97,11 @@ module TicketMaster::Provider
         end
 
         def create(options)
-          super translate options, {:name => :title}
+          super translate options, {:title => :name, 
+                                    :requestor => :requested_by,
+                                    :status => :current_state, 
+                                    :estimate => :priority,
+                                    :assignee => :owned_by}
         end
 
         private
