@@ -18,16 +18,6 @@ module TicketMaster::Provider
       attr_accessor :prefix_options
       API = PivotalAPI::Story
 
-      def self.find_by_attributes(project_id, attributes = {})
-        date_to_search = attributes[:updated_at] || attributes[:created_at]
-        tickets = []
-        unless date_to_search.nil?
-          tickets = search_by_datefields(project_id, date_to_search)
-        else
-          tickets += API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
-        end
-        tickets.flatten
-      end
 
       # The saver
       def save(*options)
@@ -75,7 +65,7 @@ module TicketMaster::Provider
       end
 
       def comment!(*options)
-      	Comment.create(self.project_id, self.id, options.first)
+        Comment.create(self.project_id, self.id, options.first)
       end
       # The closer
       def close(resolution = 'resolved')
@@ -85,23 +75,46 @@ module TicketMaster::Provider
         ticket.save
       end
 
-      private
-      def self.search_by_datefields(project_id, date_to_search)
-        date_to_search = date_to_search.strftime("%Y/%m/%d")
-        tickets = []
-        PivotalAPI::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => date_to_search}).each do |activity|
-          tickets = activity.stories.map { |xstory| self.new xstory }
-        end
-        tickets
-      end
+      class << self
 
-      def self.filter(attributes = {})
-        filter = ""
-        attributes.each_pair do |key, value|
-          filter << "#{key}:#{value} "
+        def find_by_attributes(project_id, attributes = {})
+          date_to_search = attributes[:updated_at] || attributes[:created_at]
+          tickets = []
+          unless date_to_search.nil?
+            tickets = search_by_datefields(project_id, date_to_search)
+          else
+            tickets += API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
+          end
+          tickets.flatten
         end
-        filter.strip!
+
+        def filter(attributes = {})
+          filter = ""
+          attributes.each_pair do |key, value|
+            filter << "#{key}:#{value} "
+          end
+          filter.strip!
+        end
+
+        def create(options)
+          super translate options, {:name => :title}
+        end
+
+        private
+        def search_by_datefields(project_id, date_to_search)
+          date_to_search = date_to_search.strftime("%Y/%m/%d")
+          tickets = []
+          PivotalAPI::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => date_to_search}).each do |activity|
+            tickets = activity.stories.map { |xstory| self.new xstory }
+          end
+          tickets
+        end
+
+        def translate(hash, mapping)
+          Hash[hash.map { |k, v| [mapping[k] ||= k, v]}]
+        end
       end
     end
+
   end
 end

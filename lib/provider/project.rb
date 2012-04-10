@@ -35,15 +35,8 @@ module TicketMaster::Provider
       end
 
       def ticket!(*options)
-        if options.first.is_a?(Hash)
-          options[0].merge!(:project_id => id)
-          title = options[0].delete('title') || options[0].delete(:title) || options[0].delete(:summary) || options[0].delete('summary')
-          description = options[0].delete('body') || options[0].delete(:body)
-          options[0][:name] = title
-          options[0][:description] = description
-          warn("Pivotal Tracker requires a title or name for the story") if options[0][:name].blank? and options[0]['name'].blank?
-        end
-        provider_parent(self.class)::Ticket.create(*options)
+        options.first.merge!(:project_id => self.id)
+        Ticket.create(options.first)
       end
 
       # copy from
