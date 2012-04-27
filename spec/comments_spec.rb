@@ -64,4 +64,10 @@ describe "Ticketmaster::Provider::Pivotal::Comment" do
     @comment = @ticket.comment!(:body => 'hello there boys and girls')
     @comment.should be_an_instance_of(@klass)
   end
+  
+  it "should be able to update a comment" do
+    comment = @ticket.comment @comment_id
+    comment.body = "updated body"
+    comment.save.should be_true
+  end 
 end
