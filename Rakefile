@@ -4,9 +4,9 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "ticketmaster-pivotal"
-    gem.summary = %Q{This is a ticketmaster provider for interacting with Pivotal Tracker}
-    gem.description = %Q{This is a ticketmaster provider for interacting with Pivotal Tracker .}
+    gem.name = "taskmapper-pivotal"
+    gem.summary = %Q{This is a taskmapper provider for interacting with Pivotal Tracker}
+    gem.description = %Q{This is a taskmapper provider for interacting with Pivotal Tracker .}
     gem.email = "hong.quach@abigfisch.com"
     gem.homepage = "http://ticket.rb"
     gem.authors = ["HybridGroup"]
@@ -35,7 +35,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "ticketmaster-kanbanpad#{version}"
+  rdoc.title = "taskmapper-kanbanpad#{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

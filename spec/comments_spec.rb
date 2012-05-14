@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Ticketmaster::Provider::Pivotal::Comment" do
+describe "TaskMapper::Provider::Pivotal::Comment" do
   before(:all) do
     headers = {'X-TrackerToken' => '000000'}
     wheaders = headers.merge('Content-Type' => 'application/xml')
@@ -20,10 +20,10 @@ describe "Ticketmaster::Provider::Pivotal::Comment" do
   end
   
   before(:each) do
-    @ticketmaster = TicketMaster.new(:pivotal, :token => '000000')
-    @project = @ticketmaster.project(@project_id)
+    @taskmapper = TaskMapper.new(:pivotal, :token => '000000')
+    @project = @taskmapper.project(@project_id)
     @ticket = @project.ticket(4056827)
-    @klass = TicketMaster::Provider::Pivotal::Comment
+    @klass = TaskMapper::Provider::Pivotal::Comment
   end
   
   it "should be able to load all comments" do

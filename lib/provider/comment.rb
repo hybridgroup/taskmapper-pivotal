@@ -1,6 +1,6 @@
-module TicketMaster::Provider
+module TaskMapper::Provider
   module Pivotal
-    # The comment class for ticketmaster-pivotal
+    # The comment class for taskmapper-pivotal
     # * author
     # * body => text
     # * id => position in the versions array (set by the initializer)
@@ -8,7 +8,7 @@ module TicketMaster::Provider
     # * updated_at => noted_at
     # * ticket_id (actually the story id)
     # * project_id
-    class Comment < TicketMaster::Provider::Base::Comment
+    class Comment < TaskMapper::Provider::Base::Comment
       API = PivotalAPI::Note
 
       # A custom find_by_id

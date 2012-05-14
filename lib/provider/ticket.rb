@@ -1,6 +1,6 @@
-module TicketMaster::Provider
+module TaskMapper::Provider
   module Pivotal
-    # Ticket class for ticketmaster-pivotal
+    # Ticket class for taskmapper-pivotal
     # * id
     # * status
     # * priority
@@ -12,7 +12,7 @@ module TicketMaster::Provider
     # * assignee
     # * requestor
     # * project_id (prefix_options[:project_id])
-    class Ticket < TicketMaster::Provider::Base::Ticket
+    class Ticket < TaskMapper::Provider::Base::Ticket
       @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid']
 
       attr_accessor :prefix_options

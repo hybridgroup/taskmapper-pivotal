@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Ticketmaster::Provider::Pivotal::Project" do
+describe "TaskMapper::Provider::Pivotal::Project" do
   before(:all) do
     headers = {'X-TrackerToken' => '000000'}
     wheaders = headers.merge('Content-Type' => 'application/xml')
@@ -15,55 +15,55 @@ describe "Ticketmaster::Provider::Pivotal::Project" do
   end
   
   before(:each) do
-    @ticketmaster = TicketMaster.new(:pivotal, :token => '000000')
-    @klass = TicketMaster::Provider::Pivotal::Project
+    @taskmapper = TaskMapper.new(:pivotal, :token => '000000')
+    @klass = TaskMapper::Provider::Pivotal::Project
   end
   
   it "should be able to load all projects" do
-    @ticketmaster.projects.should be_an_instance_of(Array)
-    @ticketmaster.projects.first.should be_an_instance_of(@klass)
+    @taskmapper.projects.should be_an_instance_of(Array)
+    @taskmapper.projects.first.should be_an_instance_of(@klass)
   end
   
   it "should be able to load projects from an array of ids" do
-    @projects = @ticketmaster.projects([@project_id])
+    @projects = @taskmapper.projects([@project_id])
     @projects.should be_an_instance_of(Array)
     @projects.first.should be_an_instance_of(@klass)
     @projects.first.id.should == @project_id
   end
   
   it "should be able to load all projects from attributes" do
-    @projects = @ticketmaster.projects(:id => @project_id)
+    @projects = @taskmapper.projects(:id => @project_id)
     @projects.should be_an_instance_of(Array)
     @projects.first.should be_an_instance_of(@klass)
     @projects.first.id.should == @project_id
   end
   
   it "should be able to find a project" do
-    @ticketmaster.project.should == @klass
-    @ticketmaster.project.find(@project_id).should be_an_instance_of(@klass)
+    @taskmapper.project.should == @klass
+    @taskmapper.project.find(@project_id).should be_an_instance_of(@klass)
   end
   
   it "should be able to find a project by id" do
-    @ticketmaster.project(@project_id).should be_an_instance_of(@klass)
-    @ticketmaster.project(@project_id).id.should == @project_id
+    @taskmapper.project(@project_id).should be_an_instance_of(@klass)
+    @taskmapper.project(@project_id).id.should == @project_id
   end
   
   it "should be able to find a project by attributes" do
-    @ticketmaster.project(:id => @project_id).id.should == @project_id
-    @ticketmaster.project(:id => @project_id).should be_an_instance_of(@klass)
+    @taskmapper.project(:id => @project_id).id.should == @project_id
+    @taskmapper.project(:id => @project_id).should be_an_instance_of(@klass)
   end
   
   # always returns true, pivotal doesn't allow updating project attributes
-  # (at least not the ones ticketmaster cares about at the moment)
+  # (at least not the ones taskmapper cares about at the moment)
   it "should be able to update and save a project" do
-    @project = @ticketmaster.project(@project_id)
+    @project = @taskmapper.project(@project_id)
     @project.update!(:name => 'some new name').should == true
     @project.name = 'this is a change'
     @project.save.should == true
   end
   
   it "should be able to create a project" do
-    @project = @ticketmaster.project.create(:name => 'Project #1')
+    @project = @taskmapper.project.create(:name => 'Project #1')
     @project.should be_an_instance_of(@klass)
   end
 

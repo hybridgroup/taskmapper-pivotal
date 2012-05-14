@@ -1,18 +1,18 @@
-module TicketMaster::Provider
-  # This is the Pivotal Tracker Provider for ticketmaster
+module TaskMapper::Provider
+  # This is the Pivotal Tracker Provider for taskmapper
   module Pivotal
-    include TicketMaster::Provider::Base
+    include TaskMapper::Provider::Base
     TICKET_API = PivotalAPI::Story
     PROJECT_API = PivotalAPI::Project
     
-    # This is for cases when you want to instantiate using TicketMaster::Provider::Lighthouse.new(auth)
+    # This is for cases when you want to instantiate using TaskMapper::Provider::Lighthouse.new(auth)
     def self.new(auth = {})
-      TicketMaster.new(:pivotal, auth)
+      TaskMapper.new(:pivotal, auth)
     end
     
     # The authorize and initializer for this provider
     def authorize(auth = {})
-      @authentication ||= TicketMaster::Authenticator.new(auth)
+      @authentication ||= TaskMapper::Authenticator.new(auth)
       auth = @authentication
       if auth.token.empty?
         raise "You should pass a token for authentication"

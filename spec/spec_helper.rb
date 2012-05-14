@@ -1,8 +1,8 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rubygems'
-require 'ticketmaster'
-require 'ticketmaster-pivotal'
+require 'taskmapper'
+require 'taskmapper-pivotal'
 require 'active_resource/http_mock'
 require 'rspec'
 

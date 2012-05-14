@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Ticketmaster::Provider::Pivotal::Ticket" do
+describe "TaskMapper::Provider::Pivotal::Ticket" do
   before(:all) do
     headers = {'X-TrackerToken' => '000000'}
     wheaders = headers.merge('Content-Type' => 'application/xml')
@@ -20,9 +20,9 @@ describe "Ticketmaster::Provider::Pivotal::Ticket" do
   end
 
   before(:each) do
-    @ticketmaster = TicketMaster.new(:pivotal, :token => '000000')
-    @project = @ticketmaster.project(@project_id)
-    @klass = TicketMaster::Provider::Pivotal::Ticket
+    @taskmapper = TaskMapper.new(:pivotal, :token => '000000')
+    @project = @taskmapper.project(@project_id)
+    @klass = TaskMapper::Provider::Pivotal::Ticket
   end
 
   it "should be able to load all tickets" do
