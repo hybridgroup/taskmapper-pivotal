@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "taskmapper-pivotal"
-  s.version = "0.8.0"
+  s.version = "0.8.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = "2012-05-14"
+  s.date = "2012-08-21"
   s.description = "This is a taskmapper provider for interacting with Pivotal Tracker ."
   s.email = "hong.quach@abigfisch.com"
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".rvmrc",
     ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
@@ -48,7 +49,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://ticket.rb"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.15"
+  s.rubygems_version = "1.8.24"
   s.summary = "This is a taskmapper provider for interacting with Pivotal Tracker"
 
   if s.respond_to? :specification_version then
