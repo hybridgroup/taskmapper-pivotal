@@ -4,12 +4,12 @@ module TaskMapper::Provider
     include TaskMapper::Provider::Base
     TICKET_API = PivotalAPI::Story
     PROJECT_API = PivotalAPI::Project
-    
+
     # This is for cases when you want to instantiate using TaskMapper::Provider::Lighthouse.new(auth)
     def self.new(auth = {})
       TaskMapper.new(:pivotal, auth)
     end
-    
+
     # The authorize and initializer for this provider
     def authorize(auth = {})
       @authentication ||= TaskMapper::Authenticator.new(auth)
@@ -25,13 +25,10 @@ module TaskMapper::Provider
     end
 
     def valid?
-      begin
-        PROJECT_API.find(:first)
-        true
-      rescue
-        false
-      end
+      !PROJECT_API.find(:first).nil?
+    rescue ActiveResource::UnauthorizedAccess
+      false
     end
-    
+
   end
 end
