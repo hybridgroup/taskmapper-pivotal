@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "taskmapper-pivotal"
-  s.version = "0.8.1"
+  s.version = "0.8.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["HybridGroup"]
-  s.date = "2012-08-21"
+  s.date = "2012-12-18"
   s.description = "This is a taskmapper provider for interacting with Pivotal Tracker ."
   s.email = "hong.quach@abigfisch.com"
   s.extra_rdoc_files = [
