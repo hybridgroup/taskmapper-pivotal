@@ -4,7 +4,6 @@ module TaskMapper::Provider
     # 
     # 
     class Project < TaskMapper::Provider::Base::Project
-      API = PivotalAPI::Project
       # The finder method
       # 
       # It accepts all the find functionalities defined by taskmapper

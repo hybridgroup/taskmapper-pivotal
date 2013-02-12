@@ -9,13 +9,11 @@ module TaskMapper::Provider
     # * ticket_id (actually the story id)
     # * project_id
     class Comment < TaskMapper::Provider::Base::Comment
-      API = PivotalAPI::Note
-
       # A custom find_by_id
       # The "comment" id is it's index in the versions array. An id of 0 therefore exists and
       # should be the first ticket (original)
       def self.find_by_id(project_id, ticket_id, id)
-        self.new(project_id, ticket_id, PivotalAPI::Note.find(id, :params => {:project_id => project_id, :story_id => ticket_id}))
+        self.new(project_id, ticket_id, PivotalTracker::Note.find(id, :params => {:project_id => project_id, :story_id => ticket_id}))
       end
 
       # A custom find_by_attributes
@@ -28,7 +26,7 @@ module TaskMapper::Provider
       #
       # It returns a custom result because we need the original story to make a comment.
       def self.search(project_id, ticket_id, options = {}, limit = 1000)
-        comments = PivotalAPI::Note.find(:all, :params => {:project_id => project_id, :story_id => ticket_id})
+        comments = PivotalTracker::Note.find(:all, :params => {:project_id => project_id, :story_id => ticket_id})
         search_by_attribute(comments, options, limit)
       end
 
@@ -39,7 +37,7 @@ module TaskMapper::Provider
         first[:story_id] ||= ticket_id
         first[:project_id] ||= project_id
         first[:text] ||= first.delete(:body) || first.delete('body')
-        note = PivotalAPI::Note.new(first)
+        note = PivotalTracker::Note.new(first)
         note.save
         self.new(project_id, ticket_id, note)
       end

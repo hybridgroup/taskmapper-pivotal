@@ -16,7 +16,6 @@ module TaskMapper::Provider
       @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid']
 
       attr_accessor :prefix_options
-      API = PivotalAPI::Story
 
 
       # The saver
@@ -70,7 +69,7 @@ module TaskMapper::Provider
       # The closer
       def close(resolution = 'resolved')
         resolution = 'resolved' unless @@allowed_states.include?(resolution)
-        ticket = PivotalAPI::Ticket.find(self.id, :params => {:project_id => self.prefix_options[:project_id]})
+        ticket = PivotalTracker::Story.find(self.id, :params => {:project_id => self.prefix_options[:project_id]})
         ticket.state = resolution
         ticket.save
       end
@@ -83,7 +82,7 @@ module TaskMapper::Provider
           unless date_to_search.nil?
             tickets = search_by_datefields(project_id, date_to_search)
           else
-            tickets += API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
+            tickets += PivotalTracker::Story.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
           end
           tickets.flatten
         end
@@ -108,7 +107,7 @@ module TaskMapper::Provider
         def search_by_datefields(project_id, date_to_search)
           date_to_search = date_to_search.strftime("%Y/%m/%d")
           tickets = []
-          PivotalAPI::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => date_to_search}).each do |activity|
+          PivotalTracker::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => date_to_search}).each do |activity|
             tickets = activity.stories.map { |xstory| self.new xstory }
           end
           tickets
