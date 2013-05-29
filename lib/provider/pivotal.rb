@@ -14,13 +14,13 @@ module TaskMapper::Provider
     def authorize(auth = {})
       @authentication ||= TaskMapper::Authenticator.new(auth)
       auth = @authentication
-      if auth.token.empty?
-        raise "You should pass a token for authentication"
-      end
+
       if auth.token
         PivotalAPI.token = auth.token
       elsif auth.username && auth.password
         PivotalAPI.authenticate(auth.username, auth.password)
+      else
+        raise "You should pass a token or a username and password for authentication"
       end
     end
 
