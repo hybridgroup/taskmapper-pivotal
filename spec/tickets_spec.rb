@@ -67,6 +67,13 @@ describe "TaskMapper::Provider::Pivotal::Ticket" do
     @ticket.save.should == true
   end
 
+  it "should be able to update a ticket to add a label and save the ticket" do
+    @ticket = @project.ticket(@ticket_id)
+    @ticket.labels = 'sample label'
+    @ticket.labels.should == 'sample label'
+    @ticket.save.should == true
+  end
+
   it "should be able to create a ticket" do
     @ticket = @project.ticket!(:title => 'Ticket #12', :description => 'Body')
     @ticket.should be_an_instance_of(@klass)
@@ -97,7 +104,7 @@ describe "TaskMapper::Provider::Pivotal::Ticket" do
     @ticket.save.should be_true
   end
 
-  it "should have all contract fields for tickets" do 
+  it "should have all contract fields for tickets" do
     @ticket = @project.ticket(@ticket_id)
     @ticket.title.should_not be_nil
     @ticket.description.should_not be_nil

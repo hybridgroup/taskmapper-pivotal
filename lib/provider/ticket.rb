@@ -12,6 +12,7 @@ module TaskMapper::Provider
     # * assignee
     # * requestor
     # * project_id (prefix_options[:project_id])
+    # * labels
     class Ticket < TaskMapper::Provider::Base::Ticket
       @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid']
 
@@ -97,9 +98,9 @@ module TaskMapper::Provider
         end
 
         def create(options)
-          super translate options, {:title => :name, 
+          super translate options, {:title => :name,
                                     :requestor => :requested_by,
-                                    :status => :current_state, 
+                                    :status => :current_state,
                                     :estimate => :priority,
                                     :assignee => :owned_by}
         end
