@@ -120,6 +120,5 @@ module TaskMapper::Provider
         end
       end
     end
-
   end
 end

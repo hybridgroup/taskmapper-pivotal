@@ -29,6 +29,5 @@ module TaskMapper::Provider
     rescue ActiveResource::UnauthorizedAccess
       false
     end
-
   end
 end

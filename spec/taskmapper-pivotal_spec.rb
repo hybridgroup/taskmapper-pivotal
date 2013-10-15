@@ -1,8 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "TaskMapperPivotal" do
-
-  before(:each) do 
+  before(:each) do
     headers = {'X-TrackerToken' => '000000'}
     ActiveResource::HttpMock.respond_to do |mock|
       mock.get '/services/v3/projects.xml', headers, fixture_for('projects'), 200
@@ -15,8 +14,7 @@ describe "TaskMapperPivotal" do
     @taskmapper.should be_a_kind_of(TaskMapper::Provider::Pivotal)
   end
 
-  it "should return true with valid authentication" do 
+  it "should return true with valid authentication" do
     @taskmapper.valid?.should be_true
   end
-
 end

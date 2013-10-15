@@ -1,12 +1,12 @@
 module TaskMapper::Provider
   module Pivotal
     # Project class for taskmapper-pivotal
-    # 
-    # 
+    #
+    #
     class Project < TaskMapper::Provider::Base::Project
       API = PivotalAPI::Project
       # The finder method
-      # 
+      #
       # It accepts all the find functionalities defined by taskmapper
       #
       # + find() and find(:all) - Returns all projects on the account
@@ -49,7 +49,6 @@ module TaskMapper::Provider
           end
         end
       end
-
     end
   end
 end
