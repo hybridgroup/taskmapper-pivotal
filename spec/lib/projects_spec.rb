@@ -77,18 +77,6 @@ describe "TaskMapper::Provider::Pivotal::Project" do
     end
   end
 
-  # always returns true, pivotal doesn't allow updating project attributes
-  # (at least not the ones taskmapper cares about at the moment)
-  describe "#save" do
-    let(:project) { taskmapper.project project_id }
-
-    it "returns true" do
-      expect(project.update!(:name => 'some new name')).to be_true
-      project.name = 'this is a change'
-      expect(project.save).to be_true
-    end
-  end
-
   describe "#create" do
     let(:project) { taskmapper.project.create :name => 'Project #1' }
 
