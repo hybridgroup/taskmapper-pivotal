@@ -5,29 +5,55 @@ module TaskMapper::Provider
     TICKET_API = PivotalAPI::Story
     PROJECT_API = PivotalAPI::Project
 
-    # This is for cases when you want to instantiate using TaskMapper::Provider::Lighthouse.new(auth)
-    def self.new(auth = {})
-      TaskMapper.new(:pivotal, auth)
+    class << self
+      attr_accessor :token, :username, :password
+
+      def new(auth = {})
+        TaskMapper.new(:pivotal, auth)
+      end
     end
 
-    # The authorize and initializer for this provider
     def authorize(auth = {})
       @authentication ||= TaskMapper::Authenticator.new(auth)
       auth = @authentication
 
+      check_auth_params auth
+      configure auth
+    end
+
+    def provider
+      TaskMapper::Provider::Pivotal
+    end
+
+    def configure(auth)
       if auth.token
         PivotalAPI.token = auth.token
+        provider.token = auth.token
       elsif auth.username && auth.password
-        PivotalAPI.authenticate(auth.username, auth.password)
-      else
-        raise "You should pass a token or a username and password for authentication"
+        PivotalAPI.authenticate auth.username, auth.password
+        provider.username = auth.username
+        provider.password = auth.password
       end
     end
 
     def valid?
-      !PROJECT_API.find(:first).nil?
+      PROJECT_API.find(:first)
+      true
     rescue ActiveResource::UnauthorizedAccess
       false
+    end
+
+    private
+    def check_auth_params(auth)
+      unless auth.token || auth.username
+        msg = "Please provide a token or username/password for authentication"
+        raise TaskMapper::Exception.new msg
+      end
+
+      if auth.username && !auth.password
+        msg = "Please provide a password for authentication"
+        raise TaskMapper::Exception.new msg
+      end
     end
   end
 end
