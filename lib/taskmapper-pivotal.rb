@@ -1,4 +1,6 @@
-require File.dirname(__FILE__) + '/pivotal/pivotal-api'
+require 'taskmapper'
+
+require 'pivotal/pivotal-api'
 
 # Monkey patch for backward compatibility issue with type cast on xml response
 class Hash
@@ -16,6 +18,8 @@ class Hash
   end
 end
 
-%w{ pivotal ticket project comment }.each do |f|
-  require File.dirname(__FILE__) + '/provider/' + f + '.rb';
-end
+require 'provider/pivotal'
+require 'provider/ticket'
+require 'provider/project'
+require 'provider/comment'
+require 'provider/version'
