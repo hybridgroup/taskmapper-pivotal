@@ -15,51 +15,87 @@ describe "TaskMapper::Provider::Pivotal::Project" do
     end
   end
 
-  it "should be able to load all projects" do
-    taskmapper.projects.should be_an_instance_of(Array)
-    taskmapper.projects.first.should be_an_instance_of(project_class)
+  describe "#projects" do
+    context "without params" do
+      let(:projects) { taskmapper.projects }
+
+      it "returns an array of all projects" do
+        expect(projects).to be_an Array
+        expect(projects.first).to be_a project_class
+      end
+    end
+
+    context "with an array of IDs" do
+      let(:projects) { taskmapper.projects [project_id] }
+
+      it "returns an array of matching projects" do
+        expect(projects).to be_an Array
+        expect(projects.first).to be_a project_class
+        expect(projects.first.id).to eq project_id
+      end
+    end
+
+    context "with a hash containing an ID" do
+      let(:projects) { taskmapper.projects :id => project_id }
+
+      it "returns an array containing the matching project" do
+        expect(projects).to be_an Array
+        expect(projects.first).to be_a project_class
+        expect(projects.first.id).to eq project_id
+      end
+    end
   end
 
-  it "should be able to load projects from an array of ids" do
-    projects = taskmapper.projects([project_id])
-    projects.should be_an_instance_of(Array)
-    projects.first.should be_an_instance_of(project_class)
-    projects.first.id.should == project_id
+  describe "#project" do
+    context "with a project ID" do
+      let(:project)  { taskmapper.project project_id }
+
+      it "returns the requested project" do
+        expect(project).to be_a project_class
+        expect(project.id).to eq project_id
+      end
+    end
+
+    context "with a hash containing a project ID" do
+      let(:project)  { taskmapper.project :id => project_id }
+
+      it "returns the requested project" do
+        expect(project).to be_a project_class
+        expect(project.id).to eq project_id
+      end
+    end
+
   end
 
-  it "should be able to load all projects from attributes" do
-    projects = taskmapper.projects(:id => project_id)
-    projects.should be_an_instance_of(Array)
-    projects.first.should be_an_instance_of(project_class)
-    projects.first.id.should == project_id
-  end
+  describe "#find" do
+    let(:project) { taskmapper.project }
 
-  it "should be able to find a project" do
-    taskmapper.project.should == project_class
-    taskmapper.project.find(project_id).should be_an_instance_of(project_class)
-  end
-
-  it "should be able to find a project by id" do
-    taskmapper.project(project_id).should be_an_instance_of(project_class)
-    taskmapper.project(project_id).id.should == project_id
-  end
-
-  it "should be able to find a project by attributes" do
-    taskmapper.project(:id => project_id).id.should == project_id
-    taskmapper.project(:id => project_id).should be_an_instance_of(project_class)
+    it "finds a project by it's ID" do
+      expect(project).to eq project_class
+      expect(project.find(project_id)).to be_a project_class
+      expect(project.find(project_id).id).to eq project_id
+    end
   end
 
   # always returns true, pivotal doesn't allow updating project attributes
   # (at least not the ones taskmapper cares about at the moment)
-  it "should be able to update and save a project" do
-    project = taskmapper.project(project_id)
-    project.update!(:name => 'some new name').should == true
-    project.name = 'this is a change'
-    project.save.should == true
+  describe "#save" do
+    let(:project) { taskmapper.project project_id }
+
+    it "returns true" do
+      expect(project.update!(:name => 'some new name')).to be_true
+      project.name = 'this is a change'
+      expect(project.save).to be_true
+    end
   end
 
-  it "should be able to create a project" do
-    project = taskmapper.project.create(:name => 'Project #1')
-    project.should be_an_instance_of(project_class)
+  describe "#create" do
+    let(:project) { taskmapper.project.create :name => 'Project #1' }
+
+    context "with a project name" do
+      it "creates a new project" do
+        expect(project).to be_a project_class
+      end
+    end
   end
 end

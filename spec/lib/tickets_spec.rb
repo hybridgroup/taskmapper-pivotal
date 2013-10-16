@@ -20,97 +20,99 @@ describe "TaskMapper::Provider::Pivotal::Ticket" do
     end
   end
 
-  it "should be able to load all tickets" do
-    project.tickets.should be_an_instance_of(Array)
-    project.tickets.first.should be_an_instance_of(ticket_class)
+  describe "#tickets" do
+    context "with no arguments" do
+      let(:tickets) { project.tickets }
+
+      it "returns an array of all tickets" do
+        expect(tickets).to be_an Array
+        expect(tickets.first).to be_a ticket_class
+      end
+    end
+
+    context "with an array of ticket IDs" do
+      let(:tickets) { project.tickets [ticket_id] }
+
+      it "returns an array containing the requested tickets" do
+        expect(tickets).to be_an Array
+        expect(tickets.first).to be_a ticket_class
+        expect(tickets.first.id).to eq ticket_id
+      end
+    end
+
+    context "with a hash containing a ticket ID" do
+      let(:tickets) { project.tickets :id => ticket_id }
+
+      it "returns an array containing the requested ticket" do
+        expect(tickets).to be_an Array
+        expect(tickets.first).to be_a ticket_class
+        expect(tickets.first.id).to eq ticket_id
+      end
+    end
   end
 
-  it "should be able to load all tickets based on an array of ids" do
-    tickets = project.tickets([ticket_id])
-    tickets.should be_an_instance_of(Array)
-    tickets.first.should be_an_instance_of(ticket_class)
-    tickets.first.id.should == ticket_id
+  describe "#ticket" do
+    context "with no arguments" do
+      it "returns the ticket class" do
+        expect(project.ticket).to eq ticket_class
+      end
+    end
+
+    context "with a ticket ID" do
+      let(:ticket) { project.ticket ticket_id }
+
+      it "returns the requested ticket" do
+        expect(ticket).to be_a ticket_class
+        expect(ticket.id).to eq ticket_id
+      end
+
+      it "returns the requested_by field" do
+        expect(ticket.requestor).to eq 'Hong Quach'
+      end
+    end
   end
 
-  it "should be able to load all tickets based on attributes" do
-    tickets = project.tickets(:id => ticket_id)
-    tickets.should be_an_instance_of(Array)
-    tickets.first.should be_an_instance_of(ticket_class)
-    tickets.first.id.should == ticket_id
+  describe "#save" do
+    let(:ticket) { project.ticket ticket_id }
+    it "updates the ticket" do
+      ticket.description = 'hello'
+      ticket.labels = 'sample label'
+
+      expect(ticket.save).to be_true
+
+      expect(ticket.labels).to eq 'sample label'
+      expect(ticket.description).to eq 'hello'
+    end
   end
 
-  it "should return the ticket class" do
-    project.ticket.should == ticket_class
+  describe "#ticket!" do
+    context "with new ticket params" do
+      let(:ticket) do
+        project.ticket!(
+          :title => "Ticket #12",
+          :description => "Body"
+        )
+      end
+
+      it "creates a new ticket" do
+        expect(ticket).to be_a ticket_class
+      end
+    end
   end
 
-  it "should be able to load a single ticket" do
-    ticket = project.ticket(ticket_id)
-    ticket.should be_an_instance_of(ticket_class)
-    ticket.id.should == ticket_id
+  describe "fields" do
+    let(:ticket) { project.ticket ticket_id }
+    it "should match the contract" do
+      expect(ticket).to respond_to(:title)
+      expect(ticket).to respond_to(:description)
+      expect(ticket).to respond_to(:status)
+      expect(ticket).to respond_to(:priority)
+      expect(ticket).to respond_to(:resolution)
+      expect(ticket).to respond_to(:created_at)
+      expect(ticket).to respond_to(:updated_at)
+      expect(ticket).to respond_to(:assignee)
+      expect(ticket).to respond_to(:requestor)
+      expect(ticket).to respond_to(:project_id)
+    end
   end
-
-  it "should be able to load a single ticket based on attributes" do
-    ticket = project.ticket(:id => ticket_id)
-    ticket.should be_an_instance_of(ticket_class)
-    ticket.id.should == ticket_id
-  end
-
-  it "should be able to update and save a ticket" do
-    ticket = project.ticket(ticket_id)
-    #ticket.save.should == nil
-    ticket.description = 'hello'
-    ticket.save.should == true
-  end
-
-  it "should be able to update a ticket to add a label and save the ticket" do
-    ticket = project.ticket(ticket_id)
-    ticket.labels = 'sample label'
-    ticket.labels.should == 'sample label'
-    ticket.save.should == true
-  end
-
-  it "should be able to create a ticket" do
-    ticket = project.ticket!(:title => 'Ticket #12', :description => 'Body')
-    ticket.should be_an_instance_of(ticket_class)
-  end
-
-  it "should be able to load all tickets based on attributes using updated_at field" do
-    ticket = project.ticket(ticket_id)
-    tickets = project.tickets(:updated_at => ticket.updated_at)
-    tickets.should be_an_instance_of(Array)
-    tickets.first.should be_an_instance_of(ticket_class)
-  end
-
-  it "shoule be able to load all tickets based on attributes using created_at field" do
-    ticket = project.ticket(ticket_id)
-    tickets = project.tickets(:created_at => ticket.created_at)
-    tickets.should be_an_instance_of(Array)
-    tickets.first.should be_an_instance_of(ticket_class)
-  end
-
-  it "should return the requested_by field" do
-    ticket = project.ticket(ticket_id)
-    ticket.requestor.should == 'Hong Quach'
-  end
-
-  it "should be able to update a ticket" do
-    ticket = project.ticket(ticket_id)
-    ticket.title = "Hello World"
-    ticket.save.should be_true
-  end
-
-  it "should have all contract fields for tickets" do
-    ticket = project.ticket(ticket_id)
-    ticket.title.should_not be_nil
-    ticket.description.should_not be_nil
-    ticket.status.should_not be_nil
-    ticket.priority.should_not be_nil
-    ticket.resolution.should_not be_nil
-    ticket.created_at.should_not be_nil
-    ticket.updated_at.should_not be_nil
-    ticket.assignee.should_not be_nil
-    ticket.requestor.should_not be_nil
-    ticket.project_id.should_not be_nil
-  end
-
 end

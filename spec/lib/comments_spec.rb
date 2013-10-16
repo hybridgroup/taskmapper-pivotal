@@ -22,42 +22,71 @@ describe "TaskMapper::Provider::Pivotal::Comment" do
     end
   end
 
-  it "should be able to load all comments" do
-    comments = ticket.comments
-    comments.should be_an_instance_of(Array)
-    comments.first.should be_an_instance_of(comment_class)
+  describe "#comments" do
+    context "with no arguments" do
+      let(:comments) { ticket.comments }
+
+      it "returns an array containing all comments" do
+        expect(comments).to be_an Array
+        expect(comments.first).to be_a comment_class
+      end
+    end
+
+    context "with an array of comment IDs" do
+      let(:comments) { ticket.comments [comment_id] }
+
+      it "returns an array of the matching comments" do
+        expect(comments).to be_an Array
+        expect(comments.first).to be_a comment_class
+        expect(comments.first.id).to eq comment_id
+      end
+    end
+
+    context "with a hash containing a comment ID" do
+      let(:comments) { ticket.comments :id => comment_id }
+
+      it "returns an array containing the matching comment" do
+        expect(comments).to be_an Array
+        expect(comments.first).to be_a comment_class
+        expect(comments.first.id).to eq comment_id
+      end
+    end
   end
 
-  it "should be able to load all comments based on 'id's" do
-    comments = ticket.comments([comment_id])
-    comments.should be_an_instance_of(Array)
-    comments.first.should be_an_instance_of(comment_class)
-    comments.first.id.should == comment_id
+  describe "#comment" do
+    context "with a comment ID" do
+      let(:comment) { ticket.comment comment_id }
+
+      it "returns the requested comment" do
+        expect(comment).to be_a comment_class
+        expect(comment.id).to eq comment_id
+      end
+    end
+
+    context "with a hash of comment attributes" do
+      let(:comment) { ticket.comment :id => comment_id }
+
+      it "returns the requested comment" do
+        expect(comment).to be_a comment_class
+        expect(comment.id).to eq comment_id
+      end
+    end
+
+    context "without arguments" do
+      it "returns the class" do
+        expect(ticket.comment).to eq comment_class
+      end
+    end
   end
 
-  it "should be able to load all comments based on attributes" do
-    comments = ticket.comments(:id => comment_id)
-    comments.should be_an_instance_of(Array)
-    comments.first.should be_an_instance_of(comment_class)
-  end
+  describe "#comment!" do
+    context "with a new comment body" do
+      let(:comment) { ticket.comment! :body => "note" }
 
-  it "should be able to load a comment based on id" do
-    comment = ticket.comment(comment_id)
-    comment.should be_an_instance_of(comment_class)
-    comment.id.should == comment_id
-  end
-
-  it "should be able to load a comment based on attributes" do
-    comment = ticket.comment(:id => comment_id)
-    comment.should be_an_instance_of(comment_class)
-  end
-
-  it "should return the class" do
-    ticket.comment.should == comment_class
-  end
-
-  it "should be able to create a comment" do # which as mentioned before is technically a ticket update
-    comment = ticket.comment!(:body => 'hello there boys and girls')
-    comment.should be_an_instance_of(comment_class)
+      it "creates a new comment" do
+        expect(comment).to be_a comment_class
+        expect(comment.body).to eq "note"
+      end
+    end
   end
 end
