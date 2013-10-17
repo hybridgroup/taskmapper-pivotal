@@ -1,32 +1,18 @@
 module TaskMapper::Provider
   module Pivotal
-    # Ticket class for taskmapper-pivotal
-    # * id
-    # * status
-    # * priority
-    # * title => name
-    # * resolution
-    # * created_at
-    # * updated_at
-    # * description => text
-    # * assignee
-    # * requestor
-    # * project_id (prefix_options[:project_id])
-    # * labels
     class Ticket < TaskMapper::Provider::Base::Ticket
-      @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid']
-
-      attr_accessor :prefix_options
       API = PivotalAPI::Story
 
+      @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid'].freeze
 
-      # The saver
       def save(*options)
-        pt_ticket = @system_data[:client]
+        story = @system_data[:client]
         self.keys.each do |key|
-          pt_ticket.send(key + '=', self.send(key)) if self.send(key) != pt_ticket.send(key)
+          if self.send(key) != story.send(key)
+            story.send key + '=', self.send(key)
+          end
         end
-        pt_ticket.save
+        story.save
       end
 
       def destroy(*options)
@@ -66,53 +52,70 @@ module TaskMapper::Provider
       end
 
       def comment!(*options)
-        Comment.create(self.project_id, self.id, options.first)
+        Comment.create self.project_id, self.id, options.first
       end
-      # The closer
+
       def close(resolution = 'resolved')
         resolution = 'resolved' unless @@allowed_states.include?(resolution)
-        ticket = PivotalAPI::Ticket.find(self.id, :params => {:project_id => self.prefix_options[:project_id]})
+        ticket = PivotalAPI::Ticket.find(
+          self.id,
+          :params => { :project_id => self.prefix_options[:project_id] }
+        )
         ticket.state = resolution
         ticket.save
       end
 
       class << self
-
         def find_by_attributes(project_id, attributes = {})
           date_to_search = attributes[:updated_at] || attributes[:created_at]
           tickets = []
-          unless date_to_search.nil?
+          if !date_to_search.nil?
             tickets = search_by_datefields(project_id, date_to_search)
           else
-            tickets += API.find(:all, :params => {:project_id => project_id, :filter => filter(attributes)}).map { |xticket| self.new xticket }
+            tickets += API.find(
+              :all,
+              :params => {
+                :project_id => project_id,
+                :filter => filter(attributes)
+              }
+            ).map { |t| self.new t }.flatten
           end
-          tickets.flatten
+
+          tickets
         end
 
         def filter(attributes = {})
           filter = ""
-          attributes.each_pair do |key, value|
-            filter << "#{key}:#{value} "
-          end
+          attributes.each_pair { |k, v| filter << "#{k}:#{v} " }
           filter.strip!
         end
 
         def create(options)
-          super translate options, {:title => :name,
-                                    :requestor => :requested_by,
-                                    :status => :current_state,
-                                    :estimate => :priority,
-                                    :assignee => :owned_by}
+          super translate(options,
+            {
+              :title => :name,
+              :requestor => :requested_by,
+              :status => :current_state,
+              :estimate => :priority,
+              :assignee => :owned_by
+            }
+          )
         end
 
         private
         def search_by_datefields(project_id, date_to_search)
           date_to_search = date_to_search.strftime("%Y/%m/%d")
-          tickets = []
-          PivotalAPI::Activity.find(:all, :params => {:project_id => project_id, :occurred_since_date => date_to_search}).each do |activity|
-            tickets = activity.stories.map { |xstory| self.new xstory }
-          end
-          tickets
+          activities = PivotalAPI::Activity.find(
+            :all,
+            :params => {
+              :project_id => project_id,
+              :occurred_since_date => date_to_search
+            }
+          )
+
+          activies.collect do |activity|
+            activity.stories.map { |story| self.new story }
+          end.flatten
         end
 
         def translate(hash, mapping)
