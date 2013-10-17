@@ -49,6 +49,16 @@ describe "TaskMapper::Provider::Pivotal::Ticket" do
         expect(tickets.first.id).to eq ticket_id
       end
     end
+
+    context "with a hash containing a created_at datetime" do
+      let(:date) { Time.parse("June 26 14:33:20 GMT 2010") }
+      let(:tickets) { project.tickets :created_at => date }
+
+      it "returns an array containing tickets created since that date" do
+        expect(tickets).to be_an Array
+        expect(tickets.first).to be_a ticket_class
+      end
+    end
   end
 
   describe "#ticket" do
@@ -96,6 +106,7 @@ describe "TaskMapper::Provider::Pivotal::Ticket" do
 
       it "creates a new ticket" do
         expect(ticket).to be_a ticket_class
+        expect(ticket.project_id).to eq project.id
       end
     end
   end

@@ -3,16 +3,16 @@ module TaskMapper::Provider
     class Comment < TaskMapper::Provider::Base::Comment
       API = PivotalAPI::Note
 
-      def initialize(*object)
-        super *object
-      end
-
       def body
         self.text
       end
 
       def body=(string)
         self.text = string
+      end
+
+      def ticket_id
+        self.story_id
       end
 
       class << self
@@ -28,27 +28,28 @@ module TaskMapper::Provider
           PivotalAPI::Note.find(
             :all,
             :params => { :project_id => project_id, :story_id => ticket_id }
-          ).collect { |note| self.new note, project_id, ticket_id }
+          ).collect { |note|
+            self.new convert_to_comment(note, project_id, ticket_id)
+          }
         end
 
-        def create(project_id, ticket_id, attrs = {})
-          attrs[:story_id] ||= ticket_id
-          attrs[:project_id] ||= project_id
+        def create(attrs)
+          attrs[:story_id] = attrs.delete(:ticket_id)
           attrs[:text] ||= (attrs.delete(:body) || attrs.delete('body'))
 
           note = PivotalAPI::Note.new(attrs)
           note.save
 
-          self.new note, project_id, ticket_id
+          self.new convert_to_comment note, attrs[:project_id], attrs[:story_id]
         end
-      end
 
-      private
-      def convert_to_comment(note, project_id, story_id)
-        attrs = note.attributes.merge({
-          :project_id => project_id,
-          :story_id => ticket_id
-        })
+        private
+        def convert_to_comment(note, project_id, story_id)
+          attrs = note.attributes.merge(
+            :project_id => project_id,
+            :story_id => story_id
+          )
+        end
       end
     end
   end

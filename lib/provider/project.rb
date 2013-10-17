@@ -25,8 +25,7 @@ module TaskMapper::Provider
       #
       # Returns boolean indicating whether or not the project was destroyed
       def destroy
-        result = self.system_data[:client].destroy
-        result.is_a?(Net::HTTPOK)
+        self.system_data[:client].destroy.is_a?(Net::HTTPOK)
       end
 
       # Public: Copies tickets/comments from one Project onto another.

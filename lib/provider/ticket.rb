@@ -3,9 +3,12 @@ module TaskMapper::Provider
     class Ticket < TaskMapper::Provider::Base::Ticket
       API = PivotalAPI::Story
 
-      @@allowed_states = ['new', 'open', 'resolved', 'hold', 'invalid'].freeze
+      ALLOWED_STATES = ['new', 'open', 'resolved', 'hold', 'invalid'].freeze
 
-      def save(*options)
+      # Public: Saves a Ticket/Story to Pivotal Tracker
+      #
+      # Returns a boolean indicating whether or not the Story saved
+      def save
         story = @system_data[:client]
         self.keys.each do |key|
           if self.send(key) != story.send(key)
@@ -15,7 +18,10 @@ module TaskMapper::Provider
         story.save
       end
 
-      def destroy(*options)
+      # Public: Destroys the Ticket/Story in Pivotal Tracker
+      #
+      # Returns whether or not the Story was destroyed
+      def destroy
         @system_data[:client].destroy.is_a?(Net::HTTPOK)
       end
 
@@ -51,15 +57,11 @@ module TaskMapper::Provider
         self.owned_by
       end
 
-      def comment!(*options)
-        Comment.create self.project_id, self.id, options.first
-      end
-
       def close(resolution = 'resolved')
-        resolution = 'resolved' unless @@allowed_states.include?(resolution)
+        resolution = 'resolved' unless ALLOWED_STATES.include?(resolution)
         ticket = PivotalAPI::Ticket.find(
           self.id,
-          :params => { :project_id => self.prefix_options[:project_id] }
+          :params => { :project_id => project_id }
         )
         ticket.state = resolution
         ticket.save
@@ -69,7 +71,7 @@ module TaskMapper::Provider
         def find_by_attributes(project_id, attributes = {})
           date_to_search = attributes[:updated_at] || attributes[:created_at]
           tickets = []
-          if !date_to_search.nil?
+          if date_to_search
             tickets = search_by_datefields(project_id, date_to_search)
           else
             tickets += API.find(
@@ -78,16 +80,16 @@ module TaskMapper::Provider
                 :project_id => project_id,
                 :filter => filter(attributes)
               }
-            ).map { |t| self.new t }.flatten
+            ).collect { |ticket|
+              self.new ticket.attributes.merge(:project_id => project_id)
+            }.flatten
           end
 
           tickets
         end
 
         def filter(attributes = {})
-          filter = ""
-          attributes.each_pair { |k, v| filter << "#{k}:#{v} " }
-          filter.strip!
+          attributes.collect { |k, v| filter << "#{k}:#{v}" }.join(' ')
         end
 
         def create(options)
@@ -105,16 +107,16 @@ module TaskMapper::Provider
         private
         def search_by_datefields(project_id, date_to_search)
           date_to_search = date_to_search.strftime("%Y/%m/%d")
-          activities = PivotalAPI::Activity.find(
+          PivotalAPI::Activity.find(
             :all,
             :params => {
               :project_id => project_id,
               :occurred_since_date => date_to_search
             }
-          )
-
-          activies.collect do |activity|
-            activity.stories.map { |story| self.new story }
+          ).collect do |activity|
+            activity.stories.map do |story|
+              self.new story.attributes.merge(:project_id => project_id)
+            end
           end.flatten
         end
 
